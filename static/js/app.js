@@ -6,6 +6,48 @@ d3.json(url).then(function(data) {
   console.log(data)
 });
 
+function init() {
+
+  d3.json(url).then(function(data) {
+
+    var samplelist = data.samples;
+    //console.log("ANOTHER Isolating 'samples' array")
+    //console.log(samplelist)
+
+    useridvalue = "940"
+
+    var idnumber = samplelist[0].id; //console.log(`ID number: ${idnumber}`);
+    var otuids = samplelist[0].otu_ids;// console.log('OTU IDs');// console.log(otuids);
+    var samplevalues = samplelist[0].sample_values;// console.log('Sample Values');// console.log(samplevalues);
+    var otulables = samplelist[0].otu_labels;// console.log('OTU LABELS');// console.log(otulables);
+
+    otuidsten = otuids.slice(0,10) //console.log('OTU Ids Top Ten') console.log(otuidsten)
+    otuidstenstring = []
+    otuidsten.forEach(function(item) {otuidstenstring.push(`OTU ${item}`);});
+    samplevaluesten = samplevalues.slice(0,10)// console.log('Sample Values Top Ten')// console.log(samplevaluesten)
+    var samplevaluestenRev = samplevaluesten.reverse();
+    otulablesten = otulables.slice(0,10)// console.log('OTU Labels Top Ten')// console.log(otulablesten)
+
+    var trace1 = {
+      x: samplevaluestenRev,
+      y: otuidstenstring,
+      type: "bar",
+      orientation: 'h'
+    };
+
+    var bardata = [trace1];
+
+    var layout = {
+      //title: "'Bar' Chart",
+      //xaxis: { title: "Drinks"},
+      //yaxis: { title: "% of Drinks Ordered"}
+      };
+
+    Plotly.newPlot("bar", bardata);
+  });
+}
+init()
+
 /**
  * Helper function to select stock data
  * Returns an array of values
@@ -111,6 +153,9 @@ function bararrys() {
     //get first ten values of sample value
     //get first ten values of otu_ids
     //get first ten values ofotu_labels
+    
+    
+    
     if (samplelist[0].id === '940') {
       var idnumber = samplelist[0].id;
       console.log(`ID number: ${idnumber}`);
@@ -132,40 +177,27 @@ function bararrys() {
       console.log('Not equal');
     }
 
-    otuidsten = otuids.slice(0,10)
-    console.log('OTU Ids Top Ten')
-    console.log(otuidsten)
+    otuidsten = otuids.slice(0,10);
+    otuidstenstr = []
+    otuidsten.forEach(function(item) {otuidstenstr.push(`OTU ${item}`);});
+    console.log('OTU Ids Top Ten');
+    console.log(otuidstenstr);
 
-    samplevaluesten = samplevalues.slice(0,10)
-    console.log('Sample Values Top Ten')
-    console.log(samplevaluesten)
+    samplevaluesten = samplevalues.slice(0,10);
+    var samplevaluestenRev = samplevaluesten.reverse();
+    console.log('Sample Values Top Ten');
+    console.log(samplevaluestenRev);
 
-    otulablesten = otulables.slice(0,10)
-    console.log('OTU Labels Top Ten')
-    console.log(otulablesten)
-
-    // var samplevaluelist = []
-    // samplelist.forEach(function(user) {samplevaluelist.push(user.sample_values);});
-    // console.log("Array of all sample values")
-    // console.log(samplevaluelist)
-
-    // //pick one array
-    // One
-
-    
-    
-    
-    
-    // samplevalueten = samplevaluelist.slice(0,10);
-    // console.log("Top ten sample values")
-    // console.log(samplevalueten)
-
-
-
+    otulablesten = otulables.slice(0,10);
+    console.log('OTU Labels Top Ten');
+    console.log(otulablesten);
    
   });
 } 
 bararrys()
+
+
+
 
   
 //Create a horizontal bar chart with a dropdown menu to display
