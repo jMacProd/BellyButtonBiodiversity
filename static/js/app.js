@@ -197,7 +197,8 @@ function updatebar(indexnumber) {
       x: samplevaluestenRev,
       y: otuidstenstring,
       type: "bar",
-      orientation: 'h'
+      orientation: 'h',
+      text: otulablestenRev
     };
 
     var bardata = [trace1];
