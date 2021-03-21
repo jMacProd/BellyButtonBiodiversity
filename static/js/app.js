@@ -308,7 +308,7 @@ function initbubble() {
       //title: "A Bubble Chart in Plotly"
     };
      
-    Plotly.plot(bubble, data, layout); 
+    Plotly.newPlot('bubble', data, layout); 
     
     
  
@@ -316,13 +316,142 @@ function initbubble() {
 }
 initbubble()
 
+////////////////////////////////////////////////////
+//Update Bubble chart
+function updatebubble(indexnumber) {
+
+  d3.json(url).then(function(data) {
+
+    var samplelist = data.samples;
+
+    //Isolate arrays
+    var idnumber = samplelist[indexnumber].id; //console.log(`ID number: ${idnumber}`);
+    var otuids = samplelist[indexnumber].otu_ids;// console.log('OTU IDs');// console.log(otuids);
+    var samplevalues = samplelist[indexnumber].sample_values;// console.log('Sample Values');// console.log(samplevalues);
+    var otulables = samplelist[indexnumber].otu_labels;// console.log('OTU LABELS');// console.log(otulables);
+    
+    // var idnumber = samplelist[0].id; //console.log(`ID number: ${idnumber}`);
+    // var otuids = samplelist[0].otu_ids;// console.log('OTU IDs');// console.log(otuids);
+    // var samplevalues = samplelist[0].sample_values;// console.log('Sample Values');// console.log(samplevalues);
+    // var otulables = samplelist[0].otu_labels;// console.log('OTU LABELS');// console.log(otulables);
+
+    var traceA = {
+      type: "scatter",
+      mode: "markers",
+      x: otuids,
+      y: samplevalues,
+      marker: {
+        size: samplevalues,
+        sizemode: 'diameter',
+        color: otuids,
+        colorscale: [[0, 'rgb(200, 255, 200)'], [1, 'rgb(0, 100, 0)']]
+      },
+      text: otulables
+    };
+     
+    var data = [traceA];
+     
+    var layout = {
+      //title: "A Bubble Chart in Plotly"
+    };
+     
+    Plotly.newPlot('bubble', data, layout);
+    
+    
+ 
+  });
+}
 
 
 
 
 
 
+////////////////////////////////////////////////////
 //Display the sample metadata, i.e., an individual's demographic information.
+
+//div for metadata<div id="sample-metadata" class="panel-body"></div>
+
+function initialmeta () {
+  d3.json(url).then(function(data) {
+
+    var metadatalist = data.metadata;
+    console.log("Isolating 'metadata' array");
+    console.log(metadatalist);
+
+    // var fullindex = Object.entries(metadatalist);
+    // console.log(fullindex)
+
+    // var singleobject = Object.entries(metadatalist[0]);
+    // console.log(singleobject);
+
+    // var singleindex = Object.entries(metadatalist[0].id);
+    // console.log(singleindex);
+
+    var userid = metadatalist[0].id;
+    console.log(`id: ${userid}`);
+
+    var usereth = metadatalist[0].ethnicity;
+    console.log(`ethnicity: ${usereth}`);
+
+    var usergen = metadatalist[0].gender;
+    console.log(`gender: ${usergen}`);
+
+    var userage = metadatalist[0].age;
+    console.log(`age: ${userage}`);
+
+    var userloc = metadatalist[0].location;
+    console.log(`location: ${userloc}`);
+
+    var useribb = metadatalist[0].bbtype;
+    console.log(`bbtype: ${useribb}`);
+
+    var userwf = metadatalist[0].wfreq;
+    console.log(`wfreq: ${userwf}`);
+
+    selectmatadata = d3.select('#sample-metadata')
+    selectmatadata.append("p").text(`id: ${userid}`)
+    selectmatadata.append("p").text(`ethnicity: ${usereth}`)
+    selectmatadata.append("p").text(`gender: ${usergen}`)
+    selectmatadata.append("p").text(`age: ${userage}`)
+    selectmatadata.append("p").text(`location: ${userloc}`)
+    selectmatadata.append("p").text(`bbtype: ${useribb}`)
+    selectmatadata.append("p").text(`wfreq: ${userwf}`)
+
+
+
+
+  }
+  );
+
+
+
+
+
+}
+  
+
+  //   var idnumber = samplelist[0].id;
+  // var samplelist = data.samples;
+  // d3.select('#sample-metadata').append("p").text
+
+
+initialmeta()
+
+// d3.select('#selDataset').append('option').attr('value', "").text('Select');
+//     i = 0;
+//     j = 0;
+//     idlist.forEach((item) => {
+//       d3.select('#selDataset')
+//           .append("option")
+//           //.attr("id", `${idlist}`)
+//           .attr("id", j++)
+//           .attr("value", i++)
+//           .text(item);
+
+
+    //});
+
 
 
 
