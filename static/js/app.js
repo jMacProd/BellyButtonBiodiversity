@@ -8,9 +8,19 @@ d3.json(url).then(function(data) {
   console.log(data)
 });
 
+//Create a horizontal bar chart with a dropdown menu to display
+//the top 10 OTUs found in that individual.
+
+
+// * Use `sample_values` as the values for the bar chart.
+
+// * Use `otu_ids` as the labels for the bar chart.
+
+// * Use `otu_labels` as the hovertext for the chart.
+
 ////////////////////////////////////////////////////
 //Create initial bar chart
-function init() {
+function initbar() {
 
   d3.json(url).then(function(data) {
 
@@ -36,7 +46,11 @@ function init() {
       x: samplevaluestenRev,
       y: otuidstenstring,
       type: "bar",
-      orientation: 'h'
+      orientation: 'h',
+      text: otulablestenRev,
+
+      //text = otulablestenRev,
+      //hoverinfo: 'otulablestenRev'
     };
 
     var bardata = [trace1];
@@ -50,7 +64,7 @@ function init() {
     Plotly.newPlot("bar", bardata);
   });
 }
-init()
+initbar()
 
 /**
  * Helper function to select stock data
@@ -141,6 +155,8 @@ function runEnter() {
 
   //Run fucntion to update bar chart
   updatebar(inputValue)
+  //Run function to update bubble chart
+  updatebubble(inputValue)
 }
 
 ////////////////////////////////////////////////////
@@ -194,7 +210,7 @@ function updatebar(indexnumber) {
 
 }
 
-
+//THIS WAS TESTING - NO NEED TO KEEP
 function bararrys() {
 
   d3.json(url).then(function(data) {
@@ -203,21 +219,6 @@ function bararrys() {
     console.log("ANOTHER Isolating 'samples' array")
     console.log(samplelist)
 
-    //Need to pick one object in Samples array
-    // if (samplelist[0].id === '940') {
-    //   console.log(samplelist[0])
-    //   return(samplelist[0]);
-    // }
-    // else(
-    //   console.log('Not equal')
-    //)
-    
-    //get first ten values of sample value
-    //get first ten values of otu_ids
-    //get first ten values ofotu_labels
-    
-    
-    
     if (samplelist[0].id === '940') {
       var idnumber = samplelist[0].id;
       console.log(`ID number: ${idnumber}`);
@@ -261,25 +262,6 @@ bararrys()
 
 
 
-  
-//Create a horizontal bar chart with a dropdown menu to display
-//the top 10 OTUs found in that individual.
-
-
-// * Use `sample_values` as the values for the bar chart.
-
-// * Use `otu_ids` as the labels for the bar chart.
-
-// * Use `otu_labels` as the hovertext for the chart.
-
-
-
-
-  // just for testing
-//getMonthlyData ()
-
-
-
 
 // Create a bubble chart that displays each sample.
 
@@ -292,6 +274,49 @@ bararrys()
 // * Use `otu_ids` for the marker colors.
 
 // * Use `otu_labels` for the text values.
+
+////////////////////////////////////////////////////
+//Create initial BUBBLE chart
+function initbubble() {
+
+  d3.json(url).then(function(data) {
+
+    var samplelist = data.samples;
+
+    var idnumber = samplelist[0].id; //console.log(`ID number: ${idnumber}`);
+    var otuids = samplelist[0].otu_ids;// console.log('OTU IDs');// console.log(otuids);
+    var samplevalues = samplelist[0].sample_values;// console.log('Sample Values');// console.log(samplevalues);
+    var otulables = samplelist[0].otu_labels;// console.log('OTU LABELS');// console.log(otulables);
+
+    var traceA = {
+      type: "scatter",
+      mode: "markers",
+      x: otuids,
+      y: samplevalues,
+      marker: {
+        size: samplevalues,
+        sizemode: 'diameter',
+        color: otuids,
+        colorscale: [[0, 'rgb(200, 255, 200)'], [1, 'rgb(0, 100, 0)']]
+      },
+      text: otulables
+    };
+     
+    var data = [traceA];
+     
+    var layout = {
+      //title: "A Bubble Chart in Plotly"
+    };
+     
+    Plotly.plot(bubble, data, layout); 
+    
+    
+ 
+  });
+}
+initbubble()
+
+
 
 
 
