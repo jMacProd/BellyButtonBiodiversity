@@ -2,7 +2,7 @@
 var url = 'data/samples.json'
 
 d3.json(url).then(function(data) {
-  console.log(url)
+  console.log("Full Data")
   console.log(data)
 });
 
@@ -19,8 +19,6 @@ d3.json(url).then(function(data) {
  * index 5 - Volume
  */
 
-
-
 // function unpack(rows, index) {
 //   return rows.map(function(row) {
 //   return row[index];
@@ -31,30 +29,65 @@ d3.json(url).then(function(data) {
 
 
 //create drop down
-// Create an array of `otu_ids`
-  //Isolate arrays
-function build () {
+//create array of ids for drop down
+
+function idarray() {
   d3.json(url).then(function(data) {
+    //create array of ids for drop down 
     var samplelist = data.samples;
+    console.log("Isolating 'samples' array")
     console.log(samplelist)
     var idlist = []
     samplelist.forEach(function(user) {idlist.push(user.id);});
+    console.log("Array if IDs")
     console.log(idlist)
-    //sampleid = samplelist.forEach(function(user) {console.log(user.id);});
-    //samplelist.forEach(function(user) {user.id});
-    //var ids = data.samples[0].id;
-    //var ids = data.samples.forEach(function(user){user.id});
-    //var dates = unpack(data.dataset.data, 0);
-    
+
+    //Create options for dropdown list
+    d3.select('#selDataset').append('option').attr('value', "").text('Select');
+    idlist.forEach((item) => {
+      d3.select('#selDataset')
+          .append("option")
+          //.attr("id", `${idlist}`)
+          .attr("value", item)
+          .text(item);
+    });
+   
   });
 } 
-build()
+idarray()
+
+//////////////////////////////////Listening event
+
+//Reference the button id
+//var button = d3.select("#filter-btn");
+//var resetbutton = button.text("Reset Table");
+
+//Reference the input field id
+var form = d3.select("#selDataset");
+//<select id="selDataset" onchange="optionChanged(this.value)"></select>
+
+// Create event handlers for clicking the button or pressing the enter key
+//button.on("click", runEnter);
+form.on("change",runEnter);
+//button.on("click", reset);
 
 
 
+////////////////////////////////////////////
+//Collect drop down value
+function runEnter() {
+  // Prevent the page from refreshing
+  d3.event.preventDefault();
 
-//grab the value of drop down
-
+  console.log('Filters:')
+  console.log('--------')
+  
+  // Select the input element and get the raw HTML node
+  var inputElement = d3.select("#selDataset");
+  var inputValue = inputElement.property("value");
+  console.log(inputValue);
+}
+  
 //Create a horizontal bar chart with a dropdown menu to display
 //the top 10 OTUs found in that individual.
 
