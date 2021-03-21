@@ -1,4 +1,6 @@
-// Use the D3 library to read in `samples.json`.
+////////////////////////////////////////////////////
+//Use the D3 library to read in `samples.json`.
+
 var url = 'data/samples.json'
 
 d3.json(url).then(function(data) {
@@ -6,6 +8,8 @@ d3.json(url).then(function(data) {
   console.log(data)
 });
 
+////////////////////////////////////////////////////
+//Create initial bar chart
 function init() {
 
   d3.json(url).then(function(data) {
@@ -14,19 +18,19 @@ function init() {
     //console.log("ANOTHER Isolating 'samples' array")
     //console.log(samplelist)
 
-    useridvalue = "940"
-
     var idnumber = samplelist[0].id; //console.log(`ID number: ${idnumber}`);
     var otuids = samplelist[0].otu_ids;// console.log('OTU IDs');// console.log(otuids);
     var samplevalues = samplelist[0].sample_values;// console.log('Sample Values');// console.log(samplevalues);
     var otulables = samplelist[0].otu_labels;// console.log('OTU LABELS');// console.log(otulables);
 
     otuidsten = otuids.slice(0,10) //console.log('OTU Ids Top Ten') console.log(otuidsten)
+    var otuidstenRev = otuidsten.reverse();
     otuidstenstring = []
-    otuidsten.forEach(function(item) {otuidstenstring.push(`OTU ${item}`);});
+    otuidstenRev.forEach(function(item) {otuidstenstring.push(`OTU ${item}`);});
     samplevaluesten = samplevalues.slice(0,10)// console.log('Sample Values Top Ten')// console.log(samplevaluesten)
     var samplevaluestenRev = samplevaluesten.reverse();
     otulablesten = otulables.slice(0,10)// console.log('OTU Labels Top Ten')// console.log(otulablesten)
+    var otulablestenRev = otulablesten.reverse();
 
     var trace1 = {
       x: samplevaluestenRev,
@@ -69,9 +73,8 @@ init()
 
 
 
-
+////////////////////////////////////////////////////
 //create drop down
-//create array of ids for drop down
 
 function idarray() {
   d3.json(url).then(function(data) {
@@ -86,19 +89,25 @@ function idarray() {
 
     //Create options for dropdown list
     d3.select('#selDataset').append('option').attr('value', "").text('Select');
+    i = 0;
+    j = 0;
     idlist.forEach((item) => {
       d3.select('#selDataset')
           .append("option")
           //.attr("id", `${idlist}`)
-          .attr("value", item)
+          .attr("id", j++)
+          .attr("value", i++)
           .text(item);
+
+
     });
    
   });
 } 
 idarray()
 
-//////////////////////////////////Listening event
+////////////////////////////////////////////////////
+//Listening event
 
 //Reference the button id
 //var button = d3.select("#filter-btn");
@@ -115,23 +124,76 @@ form.on("change",runEnter);
 
 
 
-////////////////////////////////////////////
+////////////////////////////////////////////////////
 //Collect drop down value
 function runEnter() {
   // Prevent the page from refreshing
   d3.event.preventDefault();
 
   //console.log('Filter:')
-  
-  
+    
   // Select the input element and get the raw HTML node
   var inputElement = d3.select("#selDataset");
   var inputValue = inputElement.property("value");
-  console.log(`Filter: ${inputValue}`);
+  //var inputtext = inputElement.select("#property("text"); - not working
+  console.log(`Filter: (${inputValue})`);
   console.log('--------')
 
-  //RUN SOME SORT OF FUNCTION WITH THE INPUT VALUE
+  //Run fucntion to update bar chart
+  updatebar(inputValue)
 }
+
+////////////////////////////////////////////////////
+//Update bar based on filter value
+function updatebar(indexnumber) {
+  d3.json(url).then(function(data) {
+    var samplelist = data.samples;
+    
+    //Isolate arrays
+    var idnumber = samplelist[indexnumber].id; //console.log(`ID number: ${idnumber}`);
+    var otuids = samplelist[indexnumber].otu_ids;// console.log('OTU IDs');// console.log(otuids);
+    var samplevalues = samplelist[indexnumber].sample_values;// console.log('Sample Values');// console.log(samplevalues);
+    var otulables = samplelist[indexnumber].otu_labels;// console.log('OTU LABELS');// console.log(otulables);
+
+    //Isolate top ten and reverse
+    otuidsten = otuids.slice(0,10)
+    var otuidstenRev = otuidsten.reverse();
+    otuidstenstring = []
+    otuidstenRev.forEach(function(item) {otuidstenstring.push(`OTU ${item}`);});
+    console.log('New OTU Ids Top Ten')
+    console.log(otuidstenstring)
+
+    samplevaluesten = samplevalues.slice(0,10)
+    var samplevaluestenRev = samplevaluesten.reverse();
+    console.log('New Sample Values Top Ten')
+    console.log(samplevaluestenRev)
+
+    otulablesten = otulables.slice(0,10)
+    var otulablestenRev = otulablesten.reverse();
+    console.log('New OTU Labels Top Ten')
+    console.log(otulablestenRev)
+
+    var trace1 = {
+      x: samplevaluestenRev,
+      y: otuidstenstring,
+      type: "bar",
+      orientation: 'h'
+    };
+
+    var bardata = [trace1];
+
+    var layout = {
+      //title: "'Bar' Chart",
+      //xaxis: { title: "Drinks"},
+      //yaxis: { title: "% of Drinks Ordered"}
+      };
+
+    Plotly.newPlot("bar", bardata);
+    //Plotly.restyle("plots", "x", [x]);
+  });
+
+}
+
 
 function bararrys() {
 
