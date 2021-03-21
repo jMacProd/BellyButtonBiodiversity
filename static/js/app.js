@@ -102,7 +102,7 @@ function idarray() {
     console.log(idlist)
 
     //Create options for dropdown list
-    d3.select('#selDataset').append('option').attr('value', "").text('Select');
+    //d3.select('#selDataset').append('option').attr('value', "").text('Select');
     i = 0;
     j = 0;
     idlist.forEach((item) => {
@@ -302,7 +302,7 @@ function initbubble() {
         size: samplevalues,
         sizemode: 'diameter',
         color: otuids,
-        colorscale: [[0, 'rgb(200, 255, 200)'], [1, 'rgb(0, 100, 0)']]
+        colorscale: 'Earth'
       },
       text: otulables
     };
@@ -349,7 +349,7 @@ function updatebubble(indexnumber) {
         size: samplevalues,
         sizemode: 'diameter',
         color: otuids,
-        colorscale: [[0, 'rgb(200, 255, 200)'], [1, 'rgb(0, 100, 0)']]
+        colorscale: 'Earth'
       },
       text: otulables
     };
@@ -506,7 +506,7 @@ function initgauge () {
       {
         domain: { x: [0, 1], y: [0, 1] },
         value: userwf,
-        title: { text: "Belly Button Washing Frequency" },
+        title: { text: "Belly Button Washing Frequency<br> Scrubs per Week" },
         type: "indicator",
         mode: "gauge+number",
         gauge: {
@@ -569,7 +569,7 @@ function updategauge (indexnumber) {
       {
         domain: { x: [0, 1], y: [0, 1] },
         value: userwf,
-        title: { text: "Belly Button Washing Frequency" },
+        title: { text: "Belly Button Washing Frequency<br> Scrubs per Week" },
         type: "indicator",
         mode: "gauge+number",
         gauge: {
