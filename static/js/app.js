@@ -157,6 +157,8 @@ function runEnter() {
   updatebar(inputValue)
   //Run function to update bubble chart
   updatebubble(inputValue)
+  //Run functio to update metadata
+  updatemeta(inputValue)
 }
 
 ////////////////////////////////////////////////////
@@ -409,48 +411,67 @@ function initialmeta () {
     var userwf = metadatalist[0].wfreq;
     console.log(`wfreq: ${userwf}`);
 
-    selectmatadata = d3.select('#sample-metadata')
-    selectmatadata.append("p").text(`id: ${userid}`)
-    selectmatadata.append("p").text(`ethnicity: ${usereth}`)
-    selectmatadata.append("p").text(`gender: ${usergen}`)
-    selectmatadata.append("p").text(`age: ${userage}`)
-    selectmatadata.append("p").text(`location: ${userloc}`)
-    selectmatadata.append("p").text(`bbtype: ${useribb}`)
-    selectmatadata.append("p").text(`wfreq: ${userwf}`)
-
-
-
+    selectmatadata = d3.select('#sample-metadata');
+    selectmatadata.append("p").attr("id", "userid").text(`id: ${userid}`);
+    selectmatadata.append("p").attr("id", "usereth").text(`ethnicity: ${usereth}`);
+    selectmatadata.append("p").attr("id", "usergen").text(`gender: ${usergen}`);
+    selectmatadata.append("p").attr("id", "userage").text(`age: ${userage}`);
+    selectmatadata.append("p").attr("id", "userloc").text(`location: ${userloc}`);
+    selectmatadata.append("p").attr("id", "useribb").text(`bbtype: ${useribb}`);
+    selectmatadata.append("p").attr("id", "userwf").text(`wfreq: ${userwf}`)
 
   }
   );
-
-
-
-
-
 }
-  
 
-  //   var idnumber = samplelist[0].id;
-  // var samplelist = data.samples;
-  // d3.select('#sample-metadata').append("p").text
 
 
 initialmeta()
 
-// d3.select('#selDataset').append('option').attr('value', "").text('Select');
-//     i = 0;
-//     j = 0;
-//     idlist.forEach((item) => {
-//       d3.select('#selDataset')
-//           .append("option")
-//           //.attr("id", `${idlist}`)
-//           .attr("id", j++)
-//           .attr("value", i++)
-//           .text(item);
+function updatemeta(indexnumber) {
+
+  d3.json(url).then(function(data) {
+
+    var metadatalist = data.metadata;
+    console.log("Isolating 'metadata' array");
+    console.log(metadatalist);
+
+    var userid = metadatalist[indexnumber].id;
+    console.log(`id: ${userid}`);
+
+    var usereth = metadatalist[indexnumber].ethnicity;
+    console.log(`ethnicity: ${usereth}`);
+
+    var usergen = metadatalist[indexnumber].gender;
+    console.log(`gender: ${usergen}`);
+
+    var userage = metadatalist[indexnumber].age;
+    console.log(`age: ${userage}`);
+
+    var userloc = metadatalist[indexnumber].location;
+    console.log(`location: ${userloc}`);
+
+    var useribb = metadatalist[indexnumber].bbtype;
+    console.log(`bbtype: ${useribb}`);
+
+    var userwf = metadatalist[indexnumber].wfreq;
+    console.log(`wfreq: ${userwf}`);
+
+    selectmatadata = d3.select('#sample-metadata')
+    selectmatadata.select("#userid").text(`id: ${userid}`)
+    selectmatadata.select("#usereth").text(`ethnicity: ${usereth}`)
+    selectmatadata.select("#usergen").text(`gender: ${usergen}`)
+    selectmatadata.select("#userage").text(`age: ${userage}`)
+    selectmatadata.select("#userloc").text(`location: ${userloc}`)
+    selectmatadata.select("#useribb").text(`bbtype: ${useribb}`)
+    selectmatadata.select("#userwf").text(`wfreq: ${userwf}`)
+
+  }
+  );
+
+}
 
 
-    //});
 
 
 
