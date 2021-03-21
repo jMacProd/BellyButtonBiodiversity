@@ -157,8 +157,10 @@ function runEnter() {
   updatebar(inputValue)
   //Run function to update bubble chart
   updatebubble(inputValue)
-  //Run functio to update metadata
+  //Run function to update metadata
   updatemeta(inputValue)
+  //Run function to update guage
+  updategauge (inputValue)
 }
 
 ////////////////////////////////////////////////////
@@ -374,6 +376,9 @@ function updatebubble(indexnumber) {
 
 //div for metadata<div id="sample-metadata" class="panel-body"></div>
 
+// Display each key-value pair from the metadata JSON object somewhere on the page.
+
+
 function initialmeta () {
   d3.json(url).then(function(data) {
 
@@ -428,6 +433,8 @@ function initialmeta () {
 
 initialmeta()
 
+////////////////////////////////////////////////////
+// Update all of the plots any time that a new sample is selected.
 function updatemeta(indexnumber) {
 
   d3.json(url).then(function(data) {
@@ -476,12 +483,6 @@ function updatemeta(indexnumber) {
 
 
 
-// Display each key-value pair from the metadata JSON object somewhere on the page.
-
-
-
-
-// Update all of the plots any time that a new sample is selected.
 
 
 //ADvanced
@@ -489,5 +490,102 @@ function updatemeta(indexnumber) {
 
 // * You will need to modify the example gauge code to account for values ranging from 0 through 9.
 
+
+function initgauge () {
+
+  d3.json(url).then(function(data) {
+
+    var metadatalist = data.metadata;
+
+    var userid = metadatalist[0].id;
+
+    var userwf = metadatalist[0].wfreq;
+
+    var data = [
+      {
+        domain: { x: [0, 1], y: [0, 1] },
+        value: userwf,
+        title: { text: "Belly Button Washing Frequency" },
+        type: "indicator",
+        mode: "gauge+number",
+        gauge: {
+          axis: {
+            range: [0,9]
+          }
+        }
+
+        // gauge: {
+        //   "axis": {
+        //     "range": [0, 500],
+        //     "tickwidth": 1,
+        //     "tickcolor": "white"
+        //   },
+        //   "bgcolor": "rgba(255, 255, 255, 0.25)",
+        //   "borderwidth": 2,
+        //   "bordercolor": "rgba(255, 255, 255, 0.5)",
+        //   "steps": [{
+        //     "range": [0, 250],
+        //     "color": "rgba(255, 255, 0, 0.5)"
+        //   }, {
+        //     "range": [250, 400],
+        //     "color": "rgba(0, 0, 255, 0.75)"
+        //   }],
+        //   "threshold": {
+        //     "line": {
+        //       "color": "rgba(255, 0, 0, 1)",
+        //       "width": 4
+        //     },
+        //     "thickness": 0.75,
+        //     "value": 490
+        //   }
+ 
+      }
+    ];
+    
+    //var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+    Plotly.newPlot('gauge', data);
+   
+
+  }
+  );
+
+}
+initgauge ()
+
+
 // * Update the chart whenever a new sample is selected.
+function updategauge (indexnumber) {
+
+  d3.json(url).then(function(data) {
+
+    var metadatalist = data.metadata;
+
+    var userid = metadatalist[indexnumber].id;
+
+    var userwf = metadatalist[indexnumber].wfreq;
+
+    var data = [
+      {
+        domain: { x: [0, 1], y: [0, 1] },
+        value: userwf,
+        title: { text: "Belly Button Washing Frequency" },
+        type: "indicator",
+        mode: "gauge+number",
+        gauge: {
+          axis: {
+            range: [0,9]
+          }
+        }
+      }
+    ];
+    
+    //var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+    Plotly.newPlot('gauge', data);
+   
+
+  }
+  );
+
+}
+
 
